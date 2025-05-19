@@ -1,4 +1,29 @@
 ﻿@model List<Product>
+
+@if (TempData["success"] != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            title: "Add product successfully !",
+            icon: "success",
+            draggable: true
+        });
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: "add product failed!",
+            footer: '<a href="#">Why do I have this issue?</a>'
+        });
+    </script>
+}
+
 <div class="row mb-4">
     <div class="col-md-6">
         <h2>LIST PRODUCT</h2>

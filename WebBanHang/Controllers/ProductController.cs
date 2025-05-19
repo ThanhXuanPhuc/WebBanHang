@@ -148,7 +148,6 @@ namespace WebBanHang.Controllers
             _db.Products.Remove(product);
             _db.SaveChanges();
             TempData["success"] = "Product deleted success";
-            //chuyen den action index
             return RedirectToAction("Index");
         }
     }
