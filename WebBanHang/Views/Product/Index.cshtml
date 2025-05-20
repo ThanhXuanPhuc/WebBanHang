@@ -1,4 +1,8 @@
-﻿@model List<Product>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<WebBanHang.Models.Product>
+
 
 <partial name="_Notification" />
 
@@ -12,6 +16,7 @@
         </a>
     </div>
 </div>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -28,11 +33,11 @@
             <tr>
                 <td>@x.Name</td>
                 <td>@x.Price</td>
-                <td>@x.Category.Name</td>
+                <td>@x.Category?.Name</td>
                 <td>
-                    @if (x.ImageUrl != null)
+                    @if (!string.IsNullOrEmpty(x.ImageUrl))
                     {
-                        <img src="@x.ImageUrl" style="width:100px" />
+                        <img src="~/@x.ImageUrl" style="width:100px" />
                     }
                 </td>
                 <td>
@@ -47,3 +52,21 @@
         }
     </tbody>
 </table>
+
+@using X.PagedList.Web.Common
+
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            MaximumPageNumbersToDisplay = 5,
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+</div>

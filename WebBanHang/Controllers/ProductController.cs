@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebBanHang.Models;
+using X.PagedList;
 
 namespace WebBanHang.Controllers
 {
@@ -21,9 +22,15 @@ namespace WebBanHang.Controllers
             _db = db;
             _hosting = hosting;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            var productList = _db.Products.Include(x => x.Category).ToList();
+            int pageSize = 5; 
+            int pageNumber = page ?? 1; 
+            var productList = _db.Products
+                                 .Include(x => x.Category)
+                                 .OrderBy(x => x.Id) 
+                                 .ToPagedList(pageNumber, pageSize);
+
             return View(productList);
         }
         public IActionResult Add()
@@ -150,5 +157,6 @@ namespace WebBanHang.Controllers
             TempData["success"] = "Product deleted success";
             return RedirectToAction("Index");
         }
+
     }
 }
