@@ -53,8 +53,6 @@
     </tbody>
 </table>
 
-@using X.PagedList.Web.Common
-
 <div class="d-flex justify-content-center">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
         new PagedListRenderOptions

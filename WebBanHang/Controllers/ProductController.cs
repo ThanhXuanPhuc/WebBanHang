@@ -24,11 +24,11 @@ namespace WebBanHang.Controllers
         }
         public IActionResult Index(int? page)
         {
-            int pageSize = 5; 
-            int pageNumber = page ?? 1; 
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
             var productList = _db.Products
                                  .Include(x => x.Category)
-                                 .OrderBy(x => x.Id) 
+                                 .OrderBy(x => x.Id)
                                  .ToPagedList(pageNumber, pageSize);
 
             return View(productList);
@@ -84,37 +84,51 @@ namespace WebBanHang.Controllers
             if (ModelState.IsValid)
             {
                 var existingProduct = _db.Products.Find(product.Id);
-                if (ImageUrl != null)
+                if (existingProduct == null)
                 {
-                    product.ImageUrl = SaveImage(ImageUrl);
-                    if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
+                    TempData["update_error"] = "Product not found";
+                    return RedirectToAction("Index");
+                }
+                try
+                {
+                    if (ImageUrl != null)
                     {
-                        var oldFilePath = Path.Combine(_hosting.WebRootPath, existingProduct.ImageUrl);
-                        if (System.IO.File.Exists(oldFilePath))
+                        product.ImageUrl = SaveImage(ImageUrl);
+                        if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
                         {
-                            System.IO.File.Delete(oldFilePath);
+                            var oldFilePath = Path.Combine(_hosting.WebRootPath, existingProduct.ImageUrl);
+                            if (System.IO.File.Exists(oldFilePath))
+                            {
+                                System.IO.File.Delete(oldFilePath);
+                            }
                         }
                     }
+                    else
+                    {
+                        product.ImageUrl = existingProduct.ImageUrl;
+                    }
+
+                    existingProduct.Name = product.Name;
+                    existingProduct.Description = product.Description;
+                    existingProduct.Price = product.Price;
+                    existingProduct.CategoryId = product.CategoryId;
+                    existingProduct.ImageUrl = product.ImageUrl;
+
+                    _db.SaveChanges();
+                    TempData["update_success"] = "Product updated success";
+                    return RedirectToAction("Index");
                 }
-                else
+                catch (Exception)
                 {
-                    product.ImageUrl = existingProduct.ImageUrl;
+                    TempData["update_error"] = "Product update failed";
                 }
-                existingProduct.Name = product.Name;
-                existingProduct.Description = product.Description;
-                existingProduct.Price = product.Price;
-                existingProduct.CategoryId = product.CategoryId;
-                existingProduct.ImageUrl = product.ImageUrl;
-                _db.SaveChanges();
-                TempData["success"] = "Product updated success";
-                return RedirectToAction("Index");
             }
             ViewBag.CategoryList = _db.Categories.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
             });
-            return View();
+            return View(product);
         }
         private string SaveImage(IFormFile image)
         {
@@ -142,21 +156,30 @@ namespace WebBanHang.Controllers
             var product = _db.Products.Find(id);
             if (product == null)
             {
-                return NotFound();
+                TempData["delete_error"] = "Product not found";
+                return RedirectToAction("Index");
             }
-            if (!String.IsNullOrEmpty(product.ImageUrl))
+            try
             {
-                var oldFilePath = Path.Combine(_hosting.WebRootPath, product.ImageUrl);
-                if (System.IO.File.Exists(oldFilePath))
+                if (!String.IsNullOrEmpty(product.ImageUrl))
                 {
-                    System.IO.File.Delete(oldFilePath);
+                    var oldFilePath = Path.Combine(_hosting.WebRootPath, product.ImageUrl);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
                 }
+                _db.Products.Remove(product);
+                _db.SaveChanges();
+                TempData["delete_success"] = "Product deleted success";
+                return RedirectToAction("Index");
             }
-            _db.Products.Remove(product);
-            _db.SaveChanges();
-            TempData["success"] = "Product deleted success";
-            return RedirectToAction("Index");
-        }
+            catch (Exception)
+            {
+                TempData["delete_error"] = "Product delete failed";
+                return RedirectToAction("Index");
+            }
 
+        }
     }
 }
