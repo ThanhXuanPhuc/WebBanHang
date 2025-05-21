@@ -1,8 +1,8 @@
-﻿@using X.PagedList
+﻿@*@using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
-@model IPagedList<WebBanHang.Models.Product>
-
+@model IPagedList<WebBanHang.Models.Product>*@
+@model List<Product>;
 
 <partial name="_Notification" />
 
@@ -53,18 +53,36 @@
     </tbody>
 </table>
 
-<div class="d-flex justify-content-center">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
-        new PagedListRenderOptions
+@*<div class="d-flex justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+            new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                MaximumPageNumbersToDisplay = 5,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" }
+            })
+    </div>*@
+
+@*Tao lien ket*@
+<div>
+    <ul class="pagination pagination-lg justify-content-center">
+        <li class="page-item @(ViewBag.CurrentPage==1? "disabled":"")">
+            <a class="page-link" asp-action="Index" asp-route-page="1">&laquo;</a>
+        </li>
+        @for (var i = 1; i <= ViewBag.PageSum; i++)
         {
-            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-            DisplayLinkToLastPage = PagedListDisplayMode.Always,
-            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-            DisplayLinkToNextPage = PagedListDisplayMode.Always,
-            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-            MaximumPageNumbersToDisplay = 5,
-            UlElementClasses = new[] { "pagination" },
-            LiElementClasses = new[] { "page-item" },
-            PageClasses = new[] { "page-link" }
-        })
+            <li class="page-item @(ViewBag.CurrentPage==i? "active":"")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+            </li>
+        }
+        <li class="page-item @(ViewBag.CurrentPage==ViewBag.PageSum? "disabled":"")">
+            <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.PageSum">&raquo;</a>
+        </li>
+    </ul>
 </div>
