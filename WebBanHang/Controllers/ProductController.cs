@@ -21,18 +21,7 @@ namespace WebBanHang.Controllers
         {
             _db = db;
             _hosting = hosting;
-        }
-        //public IActionResult Index(int? page)
-        //{
-        //    int pageSize = 5;
-        //    int pageNumber = page ?? 1;
-        //    var productList = _db.Products
-        //                         .Include(x => x.Category)
-        //                         .OrderBy(x => x.Id)
-        //                         .ToPagedList(pageNumber, pageSize);
-
-        //    return View(productList);
-        //}
+        }   
         public IActionResult Index(int page=1)
         {
             int pageSize = 3;
@@ -41,7 +30,10 @@ namespace WebBanHang.Controllers
             //Truyen du lieu cho View
             ViewBag.PageSum = Math.Ceiling((double)dsSanPham.Count / pageSize);
             ViewBag.CurrentPage = currentPage;
-           
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") 
+            {
+                return PartialView("ProductPartial", dsSanPham.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList());
+            }
             return View(dsSanPham.Skip((currentPage-1)*pageSize).Take(pageSize).ToList());
         }
         public IActionResult Add()

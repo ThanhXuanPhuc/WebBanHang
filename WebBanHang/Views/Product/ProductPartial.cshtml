@@ -1,0 +1,55 @@
+﻿<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Action </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>@x.Name</td>
+                <td>@x.Price</td>
+                <td>@x.Category?.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(x.ImageUrl))
+                    {
+                        <img src="~/@x.ImageUrl" style="width:100px" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@x.Id" class="btn btn-success">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">
+                        <i class="bi bi-trash-fill"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@*Tao lien ket*@
+<div>
+    <ul class="pagination pagination-lg justify-content-center">
+        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="1">&laquo;</a>
+        </li>
+        @for (var i = 1; i <= ViewBag.PageSum; i++)
+        {
+            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="#" data-page="@i">@i</a>
+            </li>
+        }
+        <li class="page-item @(ViewBag.CurrentPage == ViewBag.PageSum ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="@ViewBag.PageSum">&raquo;</a>
+        </li>
+    </ul>
+</div>
+

@@ -130,7 +130,24 @@
     --bs-form-invalid-color: #d9534f;
     --bs-form-invalid-border-color: #d9534f
 }
+.pagination .page-link {
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+}
 
+.pagination .page-item.active .page-link {
+    color: white;
+    background-color: black;
+    border-color: black;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: gray;
+    background-color: white;
+    border-color: black;
+    pointer-events: none;
+}
 [data-bs-theme=dark] {
     color-scheme: dark;
     --bs-body-color: #e0e1e2;
