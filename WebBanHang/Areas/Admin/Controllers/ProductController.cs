@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 using WebBanHang.Models;
 using X.PagedList;
 
-namespace WebBanHang.Controllers
+namespace WebBanHang.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
