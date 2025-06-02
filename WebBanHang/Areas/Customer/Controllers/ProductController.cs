@@ -25,8 +25,23 @@ namespace WebBanHang.Areas.Customer.Controllers
                 .ToList();
 
             var dsSanPham = _db.Products.Where(p => p.CategoryId == catid).ToList();
+
+            var categoryName = _db.Categories.Find(catid).Name;
+
             ViewBag.DSLOAI = dsLoai;
+            ViewBag.CATEGORY_NAME = categoryName;
             return View(dsSanPham);
+        }
+        //Tra ve view khong can layout
+        public IActionResult LoadPartial (int catid = 1)
+        {
+         
+            var dsSanPham = _db.Products.Where(p => p.CategoryId == catid).ToList();
+
+            var categoryName = _db.Categories.Find(catid).Name;
+
+            ViewBag.CATEGORY_NAME = categoryName;
+            return PartialView("_ProductPartial",dsSanPham);
         }
     }
 }
