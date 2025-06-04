@@ -1,4 +1,5 @@
-﻿<h3 class="text-uppercase">PRODUCT LIST OF @ViewBag.CATEGORY_NAME</h3>
+﻿
+<h3 class="text-uppercase">PRODUCT LIST OF @ViewBag.CATEGORY_NAME</h3>
 
 <div class="row">
 
@@ -23,7 +24,7 @@
             }
             <div class="card-body">
                 <a href="#" class="card-link">Details</a>
-                <a href="#" class="card-link">Add To Cart</a>
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@p.Id" class="card-link">Add To Cart</a>
             </div>
         </div>
     }

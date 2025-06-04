@@ -23,11 +23,13 @@
         $(".catid-item").click(function (evt) {
             evt.preventDefault();
             let catid = $(this).data("catid");
+            $(".catid-item").removeClass("active");
+            $(this).addClass("active");
             $.ajax({
                 url: "/Customer/Product/LoadPartial",
                 data: { catid: catid },
                 success: function (data) {
-                    $('#product-list').html(data),
+                    $('#product-list').html(data);
                 }
             });
         });

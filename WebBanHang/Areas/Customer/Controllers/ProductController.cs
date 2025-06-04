@@ -41,7 +41,7 @@ namespace WebBanHang.Areas.Customer.Controllers
             var categoryName = _db.Categories.Find(catid).Name;
 
             ViewBag.CATEGORY_NAME = categoryName;
-            return PartialView("_ProductPartial",dsSanPham);
+            return PartialView("ProductPartial",dsSanPham);
         }
     }
 }
