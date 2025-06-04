@@ -54,8 +54,8 @@ namespace WebBanHang.Areas.Customer.Controllers
                     Cart cart = HttpContext.Session.GetJson<Cart>("CART");
                     if (cart != null)
                     {
-                        cart.Update(productId, qty); //cập nhật lại số lượng
-                        HttpContext.Session.SetJson("CART", cart); //lưu cart vào Session
+                        cart.Update(productId, qty); 
+                        HttpContext.Session.SetJson("CART", cart); 
                         return RedirectToAction("Index");
                     }
                 }

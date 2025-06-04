@@ -1,15 +1,15 @@
-﻿$(document).ready(function () {
-    showQuantiyCart();
-});
-let showQuantiyCart = () => {
-    $.ajax({
-        url: "/customer/cart/ThongKeSL",
-        success: function (data) {
-            //hien thi so luong san pham trong gio trong _FrontEnd.cshtml
-            $(".showcart").text(data.qty);
-        }
-    });
-}
+﻿//$(document).ready(function () {
+//    showQuantiyCart();
+//});
+//let showQuantiyCart = () => {
+//    $.ajax({
+//        url: "/customer/cart/ThongKeSL",
+//        success: function (data) {
+//            //hien thi so luong san pham trong gio trong _FrontEnd.cshtml
+//            $(".showcart").text(data.qty);
+//        }
+//    });
+//}
 $(".addtocart").click(function (evt) {
     evt.preventDefault();
     let id = $(this).attr("data-productId");
