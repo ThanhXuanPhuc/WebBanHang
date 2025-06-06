@@ -17,24 +17,20 @@ namespace WebBanHang.Areas.Admin.Controllers
         {
             _db = db;
         }
-        //Hiển thị danh sách chủng loại
         public IActionResult Index()
         {
             var listCategory = _db.Categories.ToList();
             return View(listCategory);
         }
-        //Hiển thị form thêm mới chủng loại
         public IActionResult Add()
         {
             return View();
         }
-        // Xử lý thêm chủng loại mới
         [HttpPost]
         public IActionResult Add(Category category)
         {
-            if (ModelState.IsValid) //kiem tra hop le
+            if (ModelState.IsValid)
             {
-                //thêm category vào table Categories
                 _db.Categories.Add(category);
                 _db.SaveChanges();
                 TempData["success"] = "Category inserted success";
@@ -42,7 +38,6 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             return View();
         }
-        //Hiển thị form cập nhật chủng loại
         public IActionResult Update(int id)
         {
             var category = _db.Categories.Find(id);
@@ -52,13 +47,11 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             return View(category);
         }
-        // Xử lý cập nhật chủng loại
         [HttpPost]
         public IActionResult Update(Category category)
         {
-            if (ModelState.IsValid) //kiem tra hop le
+            if (ModelState.IsValid) 
             {
-                //cập nhật category vào table Categories
                 _db.Categories.Update(category);
                 _db.SaveChanges();
                 TempData["success"] = "Category updated success";
@@ -67,7 +60,6 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View();
         }
 
-        //Hiển thị form xác nhận xóa chủng loại
         public IActionResult Delete(int id)
         {
             var category = _db.Categories.FirstOrDefault(x => x.Id == id);
@@ -77,7 +69,6 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             return View(category);
         }
-        // Xử lý xóa chủng loại
         public IActionResult DeleteConfirmed(int id)
         {
             var category = _db.Categories.Find(id);
@@ -85,7 +76,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            if (_db.Products.Where(x=>x.CategoryId==id).ToList().Count > 0) //Kiem tra co ton tai san pham nao theo the loai can xoa
+            if (_db.Products.Where(x=>x.CategoryId==id).ToList().Count > 0) 
             {
                 TempData["error"] = "The loai can xoa da co san pham. Khong the xoa!!!";
                 return RedirectToAction("Index");

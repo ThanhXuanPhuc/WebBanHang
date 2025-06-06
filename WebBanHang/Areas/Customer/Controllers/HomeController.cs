@@ -31,7 +31,7 @@ namespace WebBanHang.Areas.Customer.Controllers
         public IActionResult LoadMore(int page=2)
         {
             var pageSize = 3;
-            var dsSanPham = _db.Products.Include(x => x.Category).ToList();
+            var dsSanPham = _db.Products.Include(x => x.Category).OrderBy(x => x.Price).ToList();
             return PartialView("_ProductPartial", dsSanPham.Skip((page-1)*pageSize).Take(pageSize).ToList());
         }
         public IActionResult Privacy()
